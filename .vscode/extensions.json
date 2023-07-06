@@ -1,0 +1,15 @@
+{
+    "recommendations": [
+        "xabikos.javascriptsnippets",
+        "ms-vscode.vscode-typescript-next",
+        "pkief.material-icon-theme",
+        "ritwickdey.liveserver",
+        "christian-kohler.npm-intellisense",
+        "zhuangtongfa.material-theme",
+        "christian-kohler.path-intellisense",
+        "rvest.vs-code-prettier-eslint",
+        "humao.rest-client",
+        "akhail.save-typing",
+        "bradlc.vscode-tailwindcss"
+    ]
+}
