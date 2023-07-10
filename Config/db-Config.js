@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+  import dotenv from "dotenv";
 import mongoose from "mongoose";
 import MongoDBStore from "connect-mongodb-session";
 import session from "express-session";
@@ -10,7 +10,7 @@ const uri = process.env.URI;
 const dbConnect = () =>
   new Promise((resolve, reject) => {
     mongoose
-      .connect(uri, {
+      .connect(uri, { 
         useNewUrlParser: true,
         useUnifiedTopology: true,
       })
@@ -23,9 +23,9 @@ const dbConnect = () =>
   });
 export default dbConnect;
 
-const MongoDBStoreSession = MongoDBStore(session);
-export const store = new MongoDBStoreSession({
-  uri,
-  databaseName: "Library_Management",
-  collection: "sessions", // Collection name to store the sessions
-});
+// const MongoDBStoreSession = MongoDBStore(session);
+// export const store = new MongoDBStoreSession({
+//   uri,
+//   databaseName: "Library_Management",
+//   collection: "sessions", // Collection name to store the sessions
+// });

@@ -1,38 +1,47 @@
 import mongoose from "mongoose";
 
-const Librarian = new mongoose.Schema({
+const Library = new mongoose.Schema({
   LName: {
-    type: String,
+        type: String,
+        required:true,
   },
   LPhoneNo: {
-    type: Number,
+        type: Number,
+        required:true,
   },
 
   LEmail: {
-    type: String,
+        type: String,
+        required:true,
   },
   LContry: {
-    type: String,
+        type: String,
+        required:true,
   },
   LState: {
-    type: String,
+        type: String,
+        required:true,
   },
   LCity: {
-    type: String,
+        type: String,
+        required:true,
   },
   LArea: {
-    type: String,
+        type: String,
+        required:true,
   },
   LLandMark: {
-    type: String,
+        type: String,
+        required:true,
   },
   LPinNo: {
-    type: Number,
+        type: Number,
+        required:true,
   },
   LLogo: {
-    type: String,
+        type: String,
+        required:true,
   },
-});
+},{timestamps:true});
 
-const LibrarianData = new mongoose.model("Librarian", Librarian);
-module.exports = LibrarianData;
+export const LibraryModel = new mongoose.model("Library", Library);

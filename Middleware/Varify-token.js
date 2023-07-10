@@ -18,6 +18,7 @@ export const varifyToken = async (req, res, next) => {
     const decoded = verifyToken(token);
     if (role === "admin") {
       if (decoded.id === process.env.ADMIN_ID && decoded.role === role) {
+        // req.token = decoded
         next();
       } else {
         throw ErrorResponse.unauthorized("Authorization failed");

@@ -1,6 +1,7 @@
 class ErrorResponse extends Error {
-  constructor(status, message) {
+    constructor(status, message) {
     super(message);
+    // Object.setPrototypeOf(this, new.target.prototype);
     this.status = status;
   }
 
@@ -21,6 +22,7 @@ class ErrorResponse extends Error {
   }
 
   static internalError(msg) {
+    console.log(`internalError ${msg}`);
     return new ErrorResponse(500, msg);
   }
 }

@@ -1,13 +1,26 @@
 import { Router } from "express";
-import { FetchLPlans, ADDLPlans, SingleLPlans,updateSingleLPlans,DeleteLPlans } from '../Controller/PlansController';
-const router = Router();
+import {
+  ADDLibraryPlans,
+  DeleteAdminPlans,
+  DeleteLibraryPlans,
+  FetchAdminPlans,
+  FetchLibraryPlans,
+  updateSingleAdminPlans,
+  updateSingleLibraryPlans,
+  ADDAdminPlans,
+  SingleAdminPlans,
+} from "../Controller/PlansController";
+const Plan = Router();
 
 //admin Plan Route
-router.get('/admin/fetch', FetchLPlans);
-router.post('/admin/add', ADDLPlans);
-router.get('/admin/single', SingleLPlans);
-router.put('/admin/single', updateSingleLPlans);
-router.delete('/admin/remove', DeleteLPlans);
+Plan.get("/admin/fetch", FetchAdminPlans);
+Plan.post("/admin/add", ADDAdminPlans);
+Plan.route("/admin/single").get(SingleAdminPlans).put(updateSingleAdminPlans);
+Plan.delete("/admin/remove", DeleteAdminPlans);
+//library Plan Route
+Plan.get("/library/fetch", FetchLibraryPlans);
+Plan.post("/library/add", ADDLibraryPlans);
+Plan.route("/library/single").get(updateSingleLibraryPlans).put(updateSingleLibraryPlans);
+Plan.delete("/library/remove", DeleteLibraryPlans);
 
-export default router;
- 
+export default Plan;

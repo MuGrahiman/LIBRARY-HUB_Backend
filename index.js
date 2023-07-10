@@ -11,9 +11,12 @@ import LibraryRoute from "./Router/Library-Router"; // Import the library route
 import AdminRoute from "./Router/Admin-Router"; // Import the Admin route
 import PlansRoute from "./Router/Plans-Router"; // Import the Plans route
 import BooksRoute from "./Router/Books-Router"; // Import the Books route
+import userRouter from "./Router/User-Router";// Import the User route
+import categoryRouter from "./Router/Category-Router";// Import the User route
 import { varifyToken } from "./Middleware/Varify-token";
 import { errorHandler } from "./Middleware/Error-handler";
 import path from "path";
+import ErrorResponse from "./utils/Error-Utils";
 
 dotenv.config();
 
@@ -75,13 +78,15 @@ app.use("/admin", AdminRoute); // Use the Admin route
 app.use("/library", LibraryRoute); // Use the library route
 app.use("/plans", PlansRoute); // Use the Plans route
 app.use("/books", BooksRoute); // Use the Books route
+app.use("/users", userRouter); // Use the User route
+app.use("/category", categoryRouter); // Use the category route
 app.get(`/verify-token`, varifyToken, (req, res) => {
   res.status(200).json({ status: true });
 });
-
+ 
 dbConnect()
   .then((res) => console.log(res))
-  .catch((err) => console.log(err), console.dir);
+  .catch((err) =>ErrorResponse.internalError(err));
 
 // global error handler
 app.use(errorHandler);

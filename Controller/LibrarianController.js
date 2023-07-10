@@ -1,5 +1,5 @@
 import { generateOTP, sendMail } from "../Middleware/mail-Generator";
-import LibrarianData from "../Model/LibraryModel";
+import LibraryModel from "../Model/LibraryModel";
 import dotenv from "dotenv";
 import ErrorResponse from "../utils/Error-Utils";
 import expressAsyncHandler from "express-async-handler";
@@ -8,7 +8,7 @@ dotenv.config();
 const session = {};
 const FetchLData = async (req, res) => {
   try {
-    const result = await LibrarianData.find({});
+    const result = await LibraryModel.find({});
     console.log("success", result);
     if (result) res.json({ result });
     else res.json({ result });
@@ -28,7 +28,7 @@ const PostLData = (req, res) => {
   } = req.body;
   const { path: LLogo = "" } = req.file;
   try {
-    const LibraryData = new LibrarianData({
+    const LibraryData = new LibraryModel({
       LName,
       LPhoneNo,
       LEmail,
@@ -54,7 +54,7 @@ const PostLData = (req, res) => {
 const Login = async (req, res, next) => {
   const { Email } = req.body;
   try {
-    const result = await LibrarianData.findOne({ LEmail: Email });
+    const result = await LibraryModel.find();
     console.log(result);
     if (!result) {
       throw ErrorResponse.unAuthorized("Email is not Valid");
@@ -94,7 +94,7 @@ const varifyOTP = expressAsyncHandler(async (req, res, next) => {
 const resendOTP = expressAsyncHandler(async (req, res, next) => {
   const Email = session.Librarian.LEmail;
   console.log(session.Librarian);
-  const result = await LibrarianData.findOne({ LEmail: Email });
+  const result = await LibraryModel.findOne({ LEmail: Email });
   console.log(result);
   if (!result) {
     throw ErrorResponse.unAuthorized("Email is not Valid");
