@@ -6,7 +6,7 @@ import expressAsyncHandler from "express-async-handler";
 import { generateToken } from "../utils/JWT-Utils";
 dotenv.config();
 const session = {};
-const FetchLData = async (req, res) => {
+export const FetchData = async (req, res) => {
   try {
     const result = await LibraryModel.find({});
     console.log("success", result);
@@ -14,44 +14,45 @@ const FetchLData = async (req, res) => {
     else res.json({ result });
   } catch (error) {}
 };
-const PostLData = (req, res) => {
+export const PostData = (req,res,next) => {
+  
   const {
-    LName,
-    LPhoneNo,
-    LEmail,
-    LContry,
-    LState,
-    LCity,
-    LArea,
-    LLandMark,
-    LPinNo,
+    Name,
+    PhoneNo,
+    Email,
+    Contry,
+    State,
+    City,
+    Area,
+    LandMark,
+    PinNo,
+    District,
   } = req.body;
-  const { path: LLogo = "" } = req.file;
   try {
     const LibraryData = new LibraryModel({
-      LName,
-      LPhoneNo,
-      LEmail,
-      LContry,
-      LState,
-      LCity,
-      LArea,
-      LLandMark,
-      LPinNo,
-      LLogo,
+      Name,
+      PhoneNo,
+      Email,
+      Contry,  
+      State,
+      City,
+      Area,
+      LandMark,
+      PinNo,
+      District,
     });
     LibraryData.save({ timeout: 20000 })
       .then((result) => {
         console.log(`success ${result}`);
         res.json({ success: result });
       })
-      .catch((err) => console.log(err), res.json({ failed: err }));
+      .catch(next((err) => ErrorResponse.internalError(err.message.split(": ")[1])));
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-const Login = async (req, res, next) => {
+export const Login = async (req, res, next) => {
   const { Email } = req.body;
   try {
     const result = await LibraryModel.find();
@@ -80,7 +81,7 @@ const Login = async (req, res, next) => {
   }
 };
 
-const varifyOTP = expressAsyncHandler(async (req, res, next) => {
+export const varifyOTP = expressAsyncHandler(async (req, res, next) => {
   const { _id } = session.Librarian;
   const OTP = req.body.join("").replace(/[ ,]/g, "");
   if (session.OTP == OTP) {
@@ -91,7 +92,7 @@ const varifyOTP = expressAsyncHandler(async (req, res, next) => {
   }
 });
 
-const resendOTP = expressAsyncHandler(async (req, res, next) => {
+export const resendOTP = expressAsyncHandler(async (req, res, next) => {
   const Email = session.Librarian.LEmail;
   console.log(session.Librarian);
   const result = await LibraryModel.findOne({ LEmail: Email });
@@ -113,5 +114,3 @@ const resendOTP = expressAsyncHandler(async (req, res, next) => {
     sendMail(mailOptions).then((result) => res.json({ result, OTP }));
   }
 });
-
-export { FetchLData, PostLData, Login, varifyOTP, resendOTP };

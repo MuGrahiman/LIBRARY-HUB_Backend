@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { FetchLData, PostLData ,Login,varifyOTP,resendOTP} from '../Controller/LibrarianController';
+import { FetchData, PostData ,Login,varifyOTP,resendOTP} from '../Controller/LibrarianController';
 import uploadFile from "../Middleware/Upload-File";
-const router = Router();
-// router.use() use middleware for the authentication checking
-router.get('/fetch', FetchLData);
-router.post('/add',uploadFile, PostLData);
-router.post('/login', Login);
-router.post('/otp', varifyOTP);
-router.get('/resend', resendOTP);
+const LibraryRouter = Router();
+// LibraryRouter.use() use middleware for the authentication checking
+LibraryRouter.get('/fetch', FetchData);
+LibraryRouter.post('/add',PostData);
+LibraryRouter.post('/login', Login);
+LibraryRouter.post('/otp', varifyOTP);
+LibraryRouter.get('/resend', resendOTP);
 
-export default router;
+export default LibraryRouter;
       
