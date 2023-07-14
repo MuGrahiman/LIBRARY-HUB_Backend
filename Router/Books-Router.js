@@ -6,7 +6,7 @@ const router = Router();
 
 //Books Route
 router.get('/fetch', FetchBooks);
-router.post('/add',uploadFile, ADDBooks);
+router.post('/add',uploader.single('CoverBook'), ADDBooks);
 router.get('/single', SingleBooks);
 router.put('/single',uploader.single('CoverBook'),updateBook);
 router.delete('/remove', DeleteBooks);

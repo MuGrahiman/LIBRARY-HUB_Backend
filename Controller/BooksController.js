@@ -25,8 +25,16 @@ export const ADDBooks = async (req, res, next) => {
   console.log(req.body);
   console.log(req.file);
   try {
-    const { Title, Author, Cost, Description, Genres, Publisher, publishDate } =
-      req.body;
+    const {
+      Title,
+      Author,
+      Cost,
+      Description,
+      Genres,
+      Publisher,
+      publishDate,
+      ISBN,
+    } = req.body;
     const CoverBook = req.file.path;
     const books = new BookModel({
       Title,
@@ -37,6 +45,7 @@ export const ADDBooks = async (req, res, next) => {
       Publisher,
       publishDate,
       CoverBook,
+      ISBN,
     });
     books
       .save()
@@ -50,31 +59,37 @@ export const ADDBooks = async (req, res, next) => {
   }
 };
 
-export const SingleBooks = expressAsyncHandler((req, res,next) => {
+export const SingleBooks = expressAsyncHandler((req, res, next) => {
   console.log(`in the single book`);
   try {
-  
-  const {Id} = req.query;
-  BookModel.findById(Id)
-  .then((result) => res.json({ result }))
-  .catch((err) => {
-    console.log(`in the controller ${err}`);
-    next(ErrorResponse.internalError(err.message.split(": ")[1]));
-  });
-    
-} catch (error) {
-  next(error)
-}
+    const { Id } = req.query;
+    BookModel.findById(Id)
+      .then((result) => res.json({ result }))
+      .catch((err) => {
+        console.log(`in the controller ${err}`);
+        next(ErrorResponse.internalError(err.message.split(": ")[1]));
+      });
+  } catch (error) {
+    next(error);
+  }
 });
 
-export const updateBook = expressAsyncHandler((req,res,next) => {
+export const updateBook = expressAsyncHandler((req, res, next) => {
   console.log(`in the updated book ${req.body}`);
-  const {Id} = req.query;
+  const { Id } = req.query;
   try {
-    const { Title, Author, Cost, Description,ISBN, Genres, Publisher, publishDate } =
-      req.body;
+    const {
+      Title,
+      Author,
+      Cost,
+      Description,
+      ISBN,
+      Genres,
+      Publisher,
+      publishDate,
+    } = req.body;
     const CoverBook = req.file.path;
-    BookModel.findByIdAndUpdate(Id,{
+    BookModel.findByIdAndUpdate(Id, {
       Title,
       Author,
       Cost,
@@ -82,7 +97,8 @@ export const updateBook = expressAsyncHandler((req,res,next) => {
       Genres,
       Publisher,
       publishDate,
-      CoverBook,ISBN
+      CoverBook,
+      ISBN,
     })
       .then((result) => res.json({ result }))
       .catch((err) => {

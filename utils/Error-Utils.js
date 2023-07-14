@@ -1,7 +1,7 @@
 class ErrorResponse extends Error {
     constructor(status, message) {
     super(message);
-    // Object.setPrototypeOf(this, new.target.prototype);
+    Object.setPrototypeOf(this, new.target.prototype);
     this.status = status;
   }
 
@@ -26,5 +26,5 @@ class ErrorResponse extends Error {
     return new ErrorResponse(500, msg);
   }
 }
-
+ 
 export default ErrorResponse;

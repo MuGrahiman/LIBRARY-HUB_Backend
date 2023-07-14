@@ -13,7 +13,7 @@ export const SingleAdminPlans = async (req, res) => {
   res.json({ result });
 };
 
-export const ADDAdminPlans = async (req, res) => {
+export const ADDAdminPlans = async (req, res,next) => {
   try {
     console.log(req.body);
     const {Name,Duration,Amount } = req.body;
@@ -29,9 +29,11 @@ export const ADDAdminPlans = async (req, res) => {
         console.log(`success ${result}`);
         res.json({ success: result });
       })
-      .catch((err) => console.log(err), res.json({ failed: err }));
+      .catch((err) => {
+        next(ErrorResponse.internalError(err.message.split(": ")[1]));
+      })
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 

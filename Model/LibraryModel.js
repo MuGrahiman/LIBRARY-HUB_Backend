@@ -11,7 +11,7 @@ const Library = new mongoose.Schema(
       required: true,
     },
 
-    Emai: {
+    Email: {
       type: String,
       required: true,
     },

@@ -1,5 +1,5 @@
 import { generateOTP, sendMail } from "../Middleware/mail-Generator";
-import LibraryModel from "../Model/LibraryModel";
+import {LibraryModel} from "../Model/LibraryModel";
 import dotenv from "dotenv";
 import ErrorResponse from "../utils/Error-Utils";
 import expressAsyncHandler from "express-async-handler";
@@ -14,7 +14,7 @@ export const FetchData = async (req, res) => {
     else res.json({ result });
   } catch (error) {}
 };
-export const PostData = (req,res,next) => {
+export const PostData =async (req,res,next) => {
   
   const {
     Name,
@@ -29,6 +29,15 @@ export const PostData = (req,res,next) => {
     District,
   } = req.body;
   try {
+    //  const existEmail = await LibraryModel.find({Email});
+    //  if(existEmail)next(ErrorResponse.forbidden('Mail is already used'));
+     const existEmail = await LibraryModel.findOne({ Email });
+     console.log(existEmail)
+
+     if (existEmail) {
+       return next(ErrorResponse.forbidden('Email is already in use'));
+     }
+ 
     const LibraryData = new LibraryModel({
       Name,
       PhoneNo,
@@ -41,12 +50,12 @@ export const PostData = (req,res,next) => {
       PinNo,
       District,
     });
-    LibraryData.save({ timeout: 20000 })
+    LibraryData.save()
       .then((result) => {
         console.log(`success ${result}`);
         res.json({ success: result });
       })
-      .catch(next((err) => ErrorResponse.internalError(err.message.split(": ")[1])));
+      .catch((err) => next(ErrorResponse.internalError(err.message.split(": ")[1])));
   } catch (error) {
     next(error);
   }
@@ -55,17 +64,17 @@ export const PostData = (req,res,next) => {
 export const Login = async (req, res, next) => {
   const { Email } = req.body;
   try {
-    const result = await LibraryModel.find();
-    console.log(result);
-    if (!result) {
-      throw ErrorResponse.unAuthorized("Email is not Valid");
+    const existEmail = await LibraryModel.findOne({Email});
+    console.log(existEmail);
+    if (!existEmail) {
+     return next( ErrorResponse.unAuthorized("Email is not Valid"))
     } else {
       // ----------------mail option-----------------
       let OTP = generateOTP();
       console.log(OTP);
-      session.Librarian = result;
+      session.Librarian = existEmail;
       session.OTP = OTP;
-
+ 
       let mailOptions = {
         from: process.env.NodeMailer_Pass,
         to: Email,
@@ -88,22 +97,22 @@ export const varifyOTP = expressAsyncHandler(async (req, res, next) => {
     const token = await generateToken(_id, "librarian");
     res.json({ success: token });
   } else {
-    throw ErrorResponse.unAuthorized("OTP is not Valid");
+    next (ErrorResponse.unAuthorized("OTP is not Valid"));
   }
 });
 
 export const resendOTP = expressAsyncHandler(async (req, res, next) => {
-  const Email = session.Librarian.LEmail;
+  const {Email} = session.Librarian;
   console.log(session.Librarian);
-  const result = await LibraryModel.findOne({ LEmail: Email });
+  const result = await LibraryModel.findOne({  Email });
   console.log(result);
   if (!result) {
-    throw ErrorResponse.unAuthorized("Email is not Valid");
+   return next(ErrorResponse.unAuthorized("Email is not Valid"));
   } else {
     // ----------------mail option-----------------
     let OTP = generateOTP();
     console.log(OTP);
-    session.Librarian = result;
+    session.Librarian = Email;
     session.OTP = OTP;
     let mailOptions = {
       from: process.env.NodeMailer_Pass,
