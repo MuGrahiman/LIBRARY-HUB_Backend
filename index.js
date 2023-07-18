@@ -17,9 +17,9 @@ import { varifyToken } from "./Middleware/Varify-token";
 import { errorHandler } from "./Middleware/Error-handler";
 import path from "path";
 import ErrorResponse from "./utils/Error-Utils";
+import reserverRouter from "./Router/Reserver-Router";
 
 dotenv.config();
-
 const app = express();
 const port = process.env.PORT;
 
@@ -79,6 +79,7 @@ app.use("/library", LibraryRoute); // Use the library route
 app.use("/plans", PlansRoute); // Use the Plans route
 app.use("/books", BooksRoute); // Use the Books route
 app.use("/users", userRouter); // Use the User route
+app.use("/reserve", reserverRouter); // Use the reserve route
 app.use("/category", categoryRouter); // Use the category route
 app.get(`/verify-token`, varifyToken, (req, res) => {
   res.status(200).json({ status: true });

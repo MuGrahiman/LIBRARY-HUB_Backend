@@ -25,6 +25,7 @@ export const errorHandler = (err, req, res, next) => {
   else  if (err instanceof MongooseError) {
     console.error("ValidationError in the error handler");
     const errors = Object.values(err.errors).map((error) => error.message);
+    console.log(errors)
     res.status(400).json({ success: false, errors });
   }
   // Custom Mongoose validation error handler middleware

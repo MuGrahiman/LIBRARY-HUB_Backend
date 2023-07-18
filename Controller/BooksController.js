@@ -36,6 +36,12 @@ export const ADDBooks = async (req, res, next) => {
       ISBN,
     } = req.body;
     const CoverBook = req.file.path;
+
+    const existBook = await BookModel.findOne({ ISBN });
+    console.log(existBook);
+    if (existBook)
+      return next(ErrorResponse.forbidden("Book is already in use"));
+      
     const books = new BookModel({
       Title,
       Author,
