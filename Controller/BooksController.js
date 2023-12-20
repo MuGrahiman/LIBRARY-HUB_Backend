@@ -1,11 +1,13 @@
 import expressAsyncHandler from "express-async-handler";
-import { BookModel } from "../Model/BookModel";
-import ErrorResponse from "../utils/Error-Utils";
+import { BookModel } from "../Model/BookModel.js";
+import ErrorResponse from "../utils/Error-Utils.js";
+import Cloudinary from "../Config/cloudinary-config.js";
 
 export const FetchBooks = (req, res, next) => {
-  console.log("FetchBooks");
+  console.log("FetchBooks", req.query);
+  const { LibraryId } = req.query;
   try {
-    BookModel.find()
+    BookModel.find({LibraryId})
       .then((result) => {
         res.json({ result });
       })
@@ -24,6 +26,7 @@ export const ADDBooks = async (req, res, next) => {
   console.log(`in the controller `);
   console.log(req.body);
   console.log(req.file);
+  console.log(req.token);
   try {
     const {
       Title,
@@ -35,16 +38,22 @@ export const ADDBooks = async (req, res, next) => {
       publishDate,
       ISBN,
     } = req.body;
+    // Upload the file to Cloudinary
+    // const result = await Cloudinary.uploader
+    //   .upload(req.file.path)
+    //   .then((re) => console.log(re))
+    //   .catch((err) => console.log(err));
+    // console.log(result);
     const CoverBook = req.file.path;
 
     const existBook = await BookModel.findOne({ ISBN });
     console.log(existBook);
     if (existBook)
-      return next(ErrorResponse.forbidden("Book is already in use"));
-      
+      return next(ErrorResponse.forbidden("Book is already uploaded"));
+
     const books = new BookModel({
       Title,
-      Author,
+      Author, 
       Cost,
       Description,
       Genres,
@@ -52,6 +61,7 @@ export const ADDBooks = async (req, res, next) => {
       publishDate,
       CoverBook,
       ISBN,
+      LibraryId: req.token,
     });
     books
       .save()

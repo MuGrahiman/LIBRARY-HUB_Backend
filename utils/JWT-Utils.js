@@ -1,6 +1,6 @@
-import { sign, JwtPayload, verify } from "jsonwebtoken";
+import pkg from "jsonwebtoken";
 import dotenv from "dotenv";
-
+const { sign, verify } = pkg
 dotenv.config();
 
 export const generateToken = (id,role)=>{

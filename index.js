@@ -1,5 +1,5 @@
 import express from "express";
-import dbConnect, { store } from "./Config/db-Config";
+import dbConnect from "./Config/db-Config.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
@@ -7,22 +7,22 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import fileUpload  from "express-fileupload";
-import LibraryRoute from "./Router/Library-Router"; // Import the library route
-import AdminRoute from "./Router/Admin-Router"; // Import the Admin route
-import PlansRoute from "./Router/Plans-Router"; // Import the Plans route
-import BooksRoute from "./Router/Books-Router"; // Import the Books route
-import userRouter from "./Router/User-Router";// Import the User route
-import categoryRouter from "./Router/Category-Router";// Import the User route
-import { varifyToken } from "./Middleware/Varify-token";
-import { errorHandler } from "./Middleware/Error-handler";
+import LibraryRoute from "./Router/Library-Router.js"; // Import the library route
+import AdminRoute from "./Router/Admin-Router.js"; // Import the Admin route
+import PlansRoute from "./Router/Plans-Router.js"; // Import the Plans route
+import BooksRoute from "./Router/Books-Router.js"; // Import the Books route
+import userRouter from "./Router/User-Router.js";// Import the User route
+import categoryRouter from "./Router/Category-Router.js";// Import the User route
+import { varifyToken } from "./Middleware/Varify-token.js";
+import { errorHandler } from "./Middleware/Error-handler.js";
 import path from "path";
-import ErrorResponse from "./utils/Error-Utils";
-import reserverRouter from "./Router/Reserver-Router";
+import ErrorResponse from "./utils/Error-Utils.js";
+import reserverRouter from "./Router/Reserver-Router.js";
 
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
-
+    
 // Handle MongoDB connection errors
 // store.on("error", (error) => {
 //  console.log("MongoDB Session Store Error:", error);
@@ -54,17 +54,18 @@ app.use(
     origin: "http://localhost:9999",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
-  })
+  }) 
 );
  
   app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-  app.use("/public",express.static(path.join(__dirname,"public")))
+  app.use(express.urlencoded({ extended: false }));
+  // app.use("/public",express.static(path.join(__dirname,"public")))
 // Middleware to console log the request data
 app.use((req, res, next) => {
   console.log("Incoming Request:", req.method, req.url);
   console.log("Request headers:", req.headers);
   console.log("Request BODY:", req.body);
+  console.log("Request data:", req.data);
   console.log("Request Query:", req.query);
   console.log("Request Params:", req.params);
   console.log("Request files:", req.files);
@@ -83,9 +84,9 @@ app.use("/reserve", reserverRouter); // Use the reserve route
 app.use("/category", categoryRouter); // Use the category route
 app.get(`/verify-token`, varifyToken, (req, res) => {
   res.status(200).json({ status: true });
-});
+});  
  
-dbConnect()
+dbConnect()   
   .then((res) => console.log(res))
   .catch((err) =>ErrorResponse.internalError(err));
 

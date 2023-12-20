@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { JWTToken, verifyToken } from "../utils/JWT-Utils";
+import { JWTToken, verifyToken } from "../utils/JWT-Utils.js";
 
 dotenv.config();
 

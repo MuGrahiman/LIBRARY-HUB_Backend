@@ -1,43 +1,43 @@
 import dotenv from "dotenv";
-import { JWTToken, verifyToken } from "../utils/JWT-Utils";
-import ErrorResponse from "../utils/Error-Utils";
-import { LibraryModel } from "../Model/LibraryModel";
+import {  verifyToken } from "../utils/JWT-Utils.js";
+import ErrorResponse from "../utils/Error-Utils.js";
+import { LibraryModel } from "../Model/LibraryModel.js";
 
 dotenv.config();
 
 export const varifyToken = async (req, res, next) => {
-    console.log('varify Token')
-    const { authorization } = req.headers;
+  console.log("varify Token");
+  const { authorization } = req.headers;
   const { Role } = req.query;
   console.log(authorization, Role);
-  if (!authorization) {
-    next(ErrorResponse.forbidden("Authorization token required")) 
-    // return res.status(401).json({ error: "Authorization token required" });
-  } 
+  if (!authorization || !Role)
+    next(ErrorResponse.forbidden("Authorization required"));
+
   const token = authorization.split(" ")[1];
-  console.log(token);
+  console.log(`Token : ${token}`);
+  if (token === 'null')
+    next(ErrorResponse.forbidden("Authorization token required"));
+   
   try {
-    const decoded = verifyToken(token);
-    console.log(decoded); 
+    const decoded = verifyToken(token);                    
+    console.log(decoded);    
     if (Role === "admin") {
       console.log(Role);
       if (decoded.id === process.env.ADMIN_ID && decoded.role === Role) {
-        // req.token = decoded
         next();
       } else {
-        next(ErrorResponse.unauthorized("Authorization failed"));
-        //) res.json({ admin: false });
+        throw ErrorResponse.unauthorized("Authorization failed");
       }
     } else if (Role === "library") {
       console.log(Role);
-      const result = await LibraryModel.findById({ _id: decoded.id })
-        .then((res) => { 
-          req.token = decoded;
-          next();
-        })
-        .catch((err) =>
-          next(ErrorResponse.unauthorized("Authorization failed"))
-        );
+      const result = await LibraryModel.findById({ _id: decoded.id });
+      if (result) {
+        console.log(result);
+        req.token = decoded.id;
+        next();
+      } else {
+        throw ErrorResponse.unauthorized("Authorization failed");
+      }
     } else if (Role === "user") {
       console.log(Role);
     } else {

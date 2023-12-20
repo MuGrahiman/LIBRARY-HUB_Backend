@@ -1,6 +1,6 @@
-import AdminPlanModel from "../Model/AdminPlanModel ";
-import LibraryPlanModel from "../Model/LibraryPlanModel";
-import ErrorResponse from "../utils/Error-Utils";
+import LibraryPlanModel from "../Model/LibraryPlanModel.js";
+import AdminPlanModel from '../Model/AdminPlanModel .js'
+import ErrorResponse from "../utils/Error-Utils.js"; 
 
 export const FetchAdminPlans = async (req, res) => {
   let result = await AdminPlanModel.find();
@@ -13,15 +13,15 @@ export const SingleAdminPlans = async (req, res) => {
   res.json({ result });
 };
 
-export const ADDAdminPlans = async (req, res,next) => {
+export const ADDAdminPlans = async (req, res, next) => {       
   try {
     console.log(req.body);
-    const {Name,Duration,Amount } = req.body;
+    const { Name, Duration, Amount } = req.body;
 
     const plans = new AdminPlanModel({
-     Name,
-     Duration,
-     Amount,
+      Name,
+      Duration,
+      Amount,
     });
     plans
       .save({ timeout: 20000 })
@@ -31,7 +31,7 @@ export const ADDAdminPlans = async (req, res,next) => {
       })
       .catch((err) => {
         next(ErrorResponse.internalError(err.message.split(": ")[1]));
-      })
+      });
   } catch (error) {
     next(error);
   }
@@ -41,13 +41,13 @@ export const updateSingleAdminPlans = async (req, res) => {
   const { planId } = req.query;
   const { formData } = req.body;
   console.log(req.body);
-  const {Name,Duration,Amount } = req.body;
+  const { Name, Duration, Amount } = req.body;
 
   let result = await AdminPlanModel.findByIdAndUpdate(
     { _id: planId },
-    {Name,Duration,Amount }
+    { Name, Duration, Amount }
   );
-
+ 
   if (result) res.json({ success: result });
   else res.json({ failed: result });
 };
@@ -61,6 +61,8 @@ export const DeleteAdminPlans = async (req, res) => {
   else res.json({ failed: result });
 };
 
+// Library Plan Functionalities
+
 export const FetchLibraryPlans = async (req, res) => {
   let result = await LibraryPlanModel.find();
   console.log(result);
@@ -73,15 +75,15 @@ export const SingleLibraryPlans = async (req, res) => {
   res.json({ result });
 };
 
-export const ADDLibraryPlans = async (req, res,next) => {
+export const ADDLibraryPlans = async (req, res, next) => {
   try {
     console.log(req.body);
-    const {Name,Duration,Amount } = req.body;
+    const { Name, Duration, Amount } = req.body;
 
     const plans = new LibraryPlanModel({
-     Name,
-     Duration,
-     Amount,
+      Name,
+      Duration,
+      Amount,
     });
     plans
       .save({ timeout: 20000 })
@@ -101,11 +103,11 @@ export const updateSingleLibraryPlans = async (req, res) => {
   const { planId } = req.query;
   const { formData } = req.body;
   console.log(req.body);
-  const {Name,Duration,Amount } = req.body;
+  const { Name, Duration, Amount } = req.body;
 
   let result = await LibraryPlanModel.findByIdAndUpdate(
     { _id: planId },
-    {Name,Duration,Amount }
+    { Name, Duration, Amount }
   );
 
   if (result) res.json({ success: result });

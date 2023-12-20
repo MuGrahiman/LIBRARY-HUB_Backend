@@ -1,6 +1,6 @@
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
-import Cloudinary from "../Config/cloudinary-config";
+import Cloudinary from "../Config/cloudinary-config.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -18,18 +18,21 @@ dotenv.config();
 //   api_key: process.env.API_Key,
 //   api_secret: process.env.API_Secret,
 // });
-// export const uploader = multer({ dest: 'uploads/' })
 
-const storage = new CloudinaryStorage({
-  cloudinary: Cloudinary,
-  folder: "lunarLibrary",
-  // Adjust the limits option to increase timeout
-  limits: {
-    fieldSize: 10 * 1024 * 1024, // Adjust the fieldSize limit if needed
-    fileSize: 10 * 1024 * 1024, // Adjust the fileSize limit if needed
-  },
-});
+// const storage = multer.memoryStorage(); // Store file in memory
+// export const uploader = multer({ storage: storage });
+export const uploader = multer({ dest: 'uploads/' })
 
-export const uploader = multer({
-  storage: storage,
-});
+// const storage = new CloudinaryStorage({
+//   cloudinary: Cloudinary,
+//   folder: "lunarLibrary",
+//   // Adjust the limits option to increase timeout
+//   limits: {
+//     fieldSize: 10 * 1024 * 1024, // Adjust the fieldSize limit if needed
+//     fileSize: 10 * 1024 * 1024, // Adjust the fileSize limit if needed
+//   },
+// });
+
+// export const uploader = multer({ 
+//   storage: storage,    
+// });

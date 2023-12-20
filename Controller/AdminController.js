@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import { generateToken, verifyToken } from "../utils/JWT-Utils";
-import ErrorResponse from "../utils/Error-Utils";
+import { generateToken, verifyToken } from "../utils/JWT-Utils.js";
+import ErrorResponse from "../utils/Error-Utils.js";
 
 dotenv.config();
 

@@ -15,7 +15,7 @@ const Library = new mongoose.Schema(
       type: String,
       required: true,
     },
-    Contry: {
+    Country: {
       type: String,
       required: true,
     },
@@ -36,6 +36,14 @@ const Library = new mongoose.Schema(
       required: true,
     },
     LandMark: {
+      type: String,
+      required: true,
+    },
+    Longitude: {
+      type: String,
+      required: true,
+    },
+    Latitude: {
       type: String,
       required: true,
     },

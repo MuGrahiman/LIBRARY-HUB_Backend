@@ -1,10 +1,10 @@
-import {
-  TokenExpiredError,
-  JsonWebTokenError,
-  NotBeforeError,
-} from "jsonwebtoken";
+// import {
+//   TokenExpiredError,
+//   JsonWebTokenError,
+//   NotBeforeError,
+// } from "jsonwebtoken";
 import { MongooseError } from "mongoose";
-import ErrorResponse from "../utils/Error-Utils";
+import ErrorResponse from "../utils/Error-Utils.js";
 
 export const errorHandler = (err, req, res, next) => {
   console.error(`in the error handler ${err}`);
@@ -15,12 +15,12 @@ export const errorHandler = (err, req, res, next) => {
     return res.status(err.status).json({ message: err.message });
   }
   // JSON Web Token  Error Handler
-  else if (err instanceof JsonWebTokenError) {
-    console.error(`${err.name} JsonWebTokenError in the error handler`);
-    return res.status(401).json({
-      message: `Unauthorized access restricted.please login again`,
-    });
-  }
+  // else if (err instanceof JsonWebTokenError) {
+  //   console.error(`${err.name} JsonWebTokenError in the error handler`);
+  //   return res.status(401).json({
+  //     message: `Unauthorized access restricted.please login again`,
+  //   });
+  // }
   // Custom Mongoose  error handler middleware
   else  if (err instanceof MongooseError) {
     console.error("ValidationError in the error handler");

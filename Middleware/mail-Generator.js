@@ -1,4 +1,4 @@
-import { transporter } from "../Config/nodemail-config";
+import { transporter } from "../Config/nodemail-config.js";
 
 // ----------OTP Generator----------------
 export const generateOTP = ()=> Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000; 

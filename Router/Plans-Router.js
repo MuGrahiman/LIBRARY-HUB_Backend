@@ -9,7 +9,7 @@ import {
   updateSingleLibraryPlans,
   ADDAdminPlans,
   SingleAdminPlans,
-} from "../Controller/PlansController";
+} from "../Controller/PlansController.js";
 const Plan = Router();
 
 //admin Plan Route

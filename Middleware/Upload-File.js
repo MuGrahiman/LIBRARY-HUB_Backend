@@ -1,6 +1,6 @@
 import expressAsyncHandler from "express-async-handler";
-import ErrorResponse from "../utils/Error-Utils";
-import { uploader } from "../utils/multer-utils";
+import ErrorResponse from "../utils/Error-Utils.js";
+import { uploader } from "../utils/multer-utils.js";
 
 const uploadFile = expressAsyncHandler((req, res, next) => {
   console.log("Request Body:", req.body);
